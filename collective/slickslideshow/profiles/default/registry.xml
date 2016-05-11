@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<registry>
+	<records prefix="plone.resources/vendor-slick"
+              interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+       <value key="js">++resource++collective.slickslideshow.js/vendor/slick.js</value>
+       <value key="css">
+       		<element>++resource++collective.slickslideshow.css/vendor/slick.less</element>
+       </value>
+    </records>
+
+    <records prefix="plone.resources/slickslideshow"
+              interface='Products.CMFPlone.interfaces.IResourceRegistry'>
+       <value key="js">++resource++collective.slickslideshow.js/slickslideshow.js</value>
+    </records>
+
+    <records prefix="plone.bundles/vendor-slick-bundle"
+              interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+      <value key="resources">
+        <element>vendor-slick</element>
+      </value>
+      <value key="enabled">True</value>
+      <value key="compile">True</value>
+      <value key="jscompilation">++collective.slickslideshow/js/vendor-slick-bundle-compiled.js</value>
+      <value key="csscompilation">++collective.slickslideshow/css/vendor-slick-bundle-compiled.css</value>
+      <value key="last_compilation"></value>
+    </records>
+
+    <records prefix="plone.bundles/slickslideshow-bundle"
+              interface='Products.CMFPlone.interfaces.IBundleRegistry'>
+      <value key="resources">
+        <element>slickslideshow</element>
+      </value>
+      <value key="depends">vendor-slick-bundle</value>
+      <value key="enabled">True</value>
+      <value key="compile">True</value>
+      <value key="jscompilation">++collective.slickslideshow/js/slickslideshow-bundle-compiled.js</value>
+      <value key="last_compilation"></value>
+    </records>
+</registry>
