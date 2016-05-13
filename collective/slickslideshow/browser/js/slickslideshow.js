@@ -185,9 +185,11 @@ slickSlideshow.afterChange = function(event) {
 
 		/* Update hash */
 		var slide = slickSlideshow.slides[currentSlide]
-		var url = slide.url;
-		var hash = "/"+url.split("/").slice(3).join("/");
-		window.location.hash = hash;
+		if (slide != undefined) {
+			var url = slide.url;
+			var hash = "/"+url.split("/").slice(3).join("/");
+			window.location.hash = hash;
+		}
 	}
 };
 
