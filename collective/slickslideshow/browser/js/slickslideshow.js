@@ -217,8 +217,14 @@ slickSlideshow.init = function() {
 	slickSlideshow.$contentListingObj.remove();
 	slickSlideshow.$container = $($(".slideshow")[0]);
 	slickSlideshow.getDetails();
-	slickSlideshow.initSlick();
-	slickSlideshow.getContentListing();
+
+	if (slickSlideshow.$obj.hasClass('collection')) {
+		slickSlideshow.initSlick();
+	} else {
+		slickSlideshow.initSlick();
+		slickSlideshow.getContentListing();
+	}
+
 	slickSlideshow.$obj.mousemove(slickSlideshow.slideMouseMove);
 
 	/* Mouse leave */
