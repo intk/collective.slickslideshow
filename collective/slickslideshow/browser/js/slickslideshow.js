@@ -452,6 +452,8 @@ slickSlideshow.init = function() {
 	if (isMobile.any()) {
 	    $("body").addClass("mobile");
 	    $(".video-play-btn").addClass('mobile');
+	 } else {
+	 	$("body").addClass("no-touch");
 	 }
 
 	/* Mouse leave */
