@@ -4,10 +4,22 @@
 
 (function(){ //Closure, to not leak to the scope
   var s = document.createElement("script");
-  s.src = "http://www.youtube.com/iframe_api"; 
+  s.src = "https://www.youtube.com/iframe_api"; 
   var before = document.getElementsByTagName("script")[0];
   before.parentNode.insertBefore(s, before);
 })();
+
+function isElementInViewport (el) {
+    //special bonus for those using jQuery
+    if (typeof jQuery === "function" && el instanceof jQuery) {
+        el = el[0];
+    }
+    var rect = el.getBoundingClientRect();
+
+    return (
+        Math.abs(rect.top) <= $(el).height()
+    );
+};
 
 slickSlideshow = {};
 
@@ -40,7 +52,6 @@ var isMobile = {
         return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
     }
 };
-
 
 slickSlideshow.log = function(text) {
 	if (slickSlideshow.debug) {
@@ -422,13 +433,15 @@ slickSlideshow.init = function() {
 	slickSlideshow.$container = $($(".slideshow")[0]);
 	
 	if (slickSlideshow.$obj.hasClass('collection')) {
+	
 		slickSlideshow.initSlick();
+
 		if (slickSlideshow.youtube_ready) {
 			slickSlideshow.initiated_youtube = true;
 			slickSlideshow.YT_ready();
 		}
 
-		$(window).scroll(function() {
+		$(".website-wrapper").scroll(function() {
 			var isvisible = isElementInViewport($("#slickslideshow"));
 			
 			if (!isvisible) {
