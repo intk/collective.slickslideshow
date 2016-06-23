@@ -247,6 +247,11 @@ slickSlideshow.afterChange = function(event) {
 	if ($currentSlideObj.hasClass('video-slide')) {
 		slickSlideshow.startVideoFromSlide($currentSlideObj);
 	}
+
+	if ($currentSlideObj.find('audio').length) {
+		var audio_div = $currentSlideObj.find('audio')[0];
+		audio_div.player.play();
+	}
 };
 
 slickSlideshow.beforeChange = function(event) {
@@ -262,6 +267,11 @@ slickSlideshow.beforeChange = function(event) {
 		if (slide_player != undefined && slide_player.pauseVideo) {
 			slide_player.pauseVideo();
 		}
+	}
+
+	if ($currSlider.find('audio').length) {
+		var audio_div = $currSlider.find('audio')[0];
+		audio_div.player.pause();
 	}
 };
 
@@ -480,6 +490,8 @@ slickSlideshow.init = function() {
 	    jQuery(".slick-active.video-slide img.overlay-image").hide();
 	    jQuery(".video-play-btn").hide();
   	});
+
+
 
 };
 
