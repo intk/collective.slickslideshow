@@ -278,6 +278,7 @@ slickSlideshow.beforeChange = function(event) {
 slickSlideshow.initSlick = function() {
 	slickSlideshow.$obj.slick({
 		accessibility: true,
+		draggable: false,
 		dots: false,
 		infinite: true,
 		speed: 500,
