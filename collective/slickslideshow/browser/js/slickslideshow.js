@@ -252,12 +252,22 @@ slickSlideshow.afterChange = function(event) {
 		var audio_div = $currentSlideObj.find('audio')[0];
 		audio_div.player.play();
 		var $button_play = $($currentSlideObj.find('.play-button')[0]);
-		if ($(this).hasClass('paused')) {
+		if ($button_play.hasClass('playing')) {
+	      $button_play.removeClass('playing');
+	      $button_play.addClass('paused');
+	      $button_play.removeClass('hi-icon-volume-up');
+	      $button_play.addClass('hi-icon-volume-off');
+	    } else if ($(this).hasClass('paused')) {
 	      $button_play.removeClass('paused');
 	      $button_play.addClass('playing');
 	      $button_play.removeClass('hi-icon-volume-off');
 	      $button_play.addClass('hi-icon-volume-up');
-	    } 
+	    } else {
+	      $button_play.removeClass('paused');
+	      $button_play.addClass('playing');
+	      $button_play.removeClass('hi-icon-volume-pff');
+	      $button_play.addClass('hi-icon-volume-up');
+	    }
 	}
 
 	/* Set interval for animation */
@@ -296,7 +306,17 @@ slickSlideshow.beforeChange = function(event) {
 	      $button_play.addClass('paused');
 	      $button_play.removeClass('hi-icon-volume-up');
 	      $button_play.addClass('hi-icon-volume-off');
-	    } 
+	    } else if ($(this).hasClass('paused')) {
+	      $button_play.removeClass('paused');
+	      $button_play.addClass('playing');
+	      $button_play.removeClass('hi-icon-volume-off');
+	      $button_play.addClass('hi-icon-volume-up');
+	    } else {
+	      $button_play.removeClass('paused');
+	      $button_play.addClass('playing');
+	      $button_play.removeClass('hi-icon-volume-pff');
+	      $button_play.addClass('hi-icon-volume-up');
+	    }
 	}
 
 	/* Set interval for animation */
