@@ -199,87 +199,6 @@ slickSlideshow.slideMouseMove = function() {
   }
 };
 
-function updatePOV(pano) {
-	var options = pano.options;
-	var pov_panorama = pano.panorama;
-	var pov_setInterval = pano.pov_interval;
-
-	if (pov_panorama != undefined && pov_panorama != null) { 
-		var current_heading = pov_panorama.getPov().heading;
-
-		if (options['heading_lower'] > options['heading']) {
-			var new_heading = current_heading + pano.options['heading_increase'];
-		} else {
-			var new_heading = current_heading - pano.options['heading_increase'];
-		}
-		pov_panorama.setPov({heading: new_heading, pitch: 0});
-
-		if (options['heading_lower'] > options['heading']) {
-			if (current_heading >= pano.options['heading_middle']) {
-			  /* Deacelarates - remove acceleration */
-			  pano.options['heading_increase'] = pano.options['heading_increase'] - acceleration;
-			} else {
-			  /* Acelerates  - add acceleration */
-			  pano.options['heading_increase'] = pano.options['heading_increase'] + acceleration;
-			}
-		} else {
-			if (current_heading <= pano.options['heading_middle']) {
-			  /* Deacelarates - remove acceleration */
-			  pano.options['heading_increase'] = pano.options['heading_increase'] - acceleration;
-			} else {
-			  /* Acelerates  - add acceleration */
-			  pano.options['heading_increase'] = pano.options['heading_increase'] + acceleration;
-			}
-		}
-
-		if (options['heading_lower'] > options['heading']) {
-			if (current_heading >= pano.options['heading_lower']) {
-			  clearInterval(pov_setInterval);
-			}
-		} else {
-			if (current_heading <= pano.options['heading_lower']) {
-			  clearInterval(pov_setInterval);
-			}
-		}
-	}
-}
-
-function movePOV(currentSlideObj) {
-	if (currentSlideObj.find('.street-view').length) {
-
-		var $street_view_div = jQuery(currentSlideObj.find('.street-view')[0]);
-
-		if ($street_view_div.data('headinglower') != undefined && $street_view_div.data('headinglower') != undefined != '') {
-			
-			var uid = $street_view_div.data('uid');
-			var pano = getPanorama(uid);
-			if (pano != false && pano != undefined && pano != null) {
-				if (!pano.pov_init) {
-					
-					/* MOVE POV */
-					var pov_setInterval = setInterval(function() {
-						updatePOV(pano);
-					}, interval_time);
-
-					pano.pov_interval = pov_setInterval;
-					pano.pov_init = true;
-				}
-			}
-		}
-	}
-}
-
-function clearPOV(currentSlideObj) {
-	if (currentSlideObj.find('.street-view').length) {
-		var $street_view_div = jQuery(currentSlideObj.find('.street-view')[0]);
-		var uid = $street_view_div.data('uid');
-		var pano = getPanorama(uid);
-		if (pano != false && pano != undefined && pano != null) {
-			clearInterval(pano.pov_interval);
-		}
-	}
-}
-
 slickSlideshow.afterChange = function(event) {
 	var currentSlide = event.currentSlide;
 	slickSlideshow.addDescription(currentSlide);
@@ -354,14 +273,22 @@ slickSlideshow.afterChange = function(event) {
 	}
 
 	/* Set interval for animation */
-	movePOV($currentSlideObj);
-	
+	if ($currentSlideObj.find('#street-view').length) {
+		if (!slickSlideshow.pov_init) {
+			var $street_view_div = $($currentSlideObj.find('#street-view')[0]);
+			if ($street_view_div.data('headinglower') != undefined && $street_view_div.data('headinglower') != undefined != '') {
+				pov_interval = setInterval(movePOV, interval_time);
+				slickSlideshow.pov_init = true;
+			}
+		}
+	}
 };
 
 slickSlideshow.beforeChange = function(event) {
 
 	currentSlide = event.currentSlide;
 	var $currSlider = jQuery(event.$slides[currentSlide]);
+
 
 	if ($currSlider.hasClass("video-slide")) {
 		var frameID = jQuery($currSlider.find('iframe')[0]).attr("id");
@@ -377,7 +304,7 @@ slickSlideshow.beforeChange = function(event) {
 		if (!jQuery('body').hasClass('mobile')) {
 			audio_div.player.pause();
 		}
-		var $button_play = jQuery($currSlider.find('.play-button')[0]);
+		var $button_play = $($currSlider.find('.play-button')[0]);
 		if ($button_play.hasClass('playing')) {
 	      $button_play.removeClass('playing');
 	      $button_play.addClass('paused');
@@ -392,7 +319,11 @@ slickSlideshow.beforeChange = function(event) {
 	      $button_play.addClass('hi-icon-volume-up');
 	    }
 	}
-	clearPOV($currSlider);
+
+	/* Set interval for animation */
+	if ($currSlider.find('#street-view').length) {
+		clearInterval(pov_interval);
+	}
 };
 
 slickSlideshow.initSlick = function() {
@@ -618,14 +549,6 @@ slickSlideshow.init = function() {
     	slickSlideshow.$obj.slickNext();
     });
 
-	jQuery('.street-view').on('click touchstart', function() {
-		if (panoramas != undefined) {
-	   		for (i = 0; i < panoramas.length; i++) {
-	   			var pano = panoramas[i];
-	   			clearInterval(pano.pov_interval);
-	   		}
-   		}
-   	});
 };
 
 jQuery(document).ready(function() {
