@@ -115,7 +115,7 @@ slickSlideshow.getSlideDetails = function(item, last) {
 
 	slickSlideshow.slides.push(slide_item);
 
-	$.getJSON(URL, function(data) {
+	jQuery.getJSON(URL, function(data) {
 		if (data.media.type == "Youtube") {
 			embed = slickSlideshow.getYoutubeEmbed(data.media);
 			isVideo = true;
@@ -160,10 +160,10 @@ slickSlideshow.getContentListing = function() {
 		}
 	}
 	
-	$.getJSON(URL, function(data) {
+	jQuery.getJSON(URL, function(data) {
 		var data_len = jQuery(data).length;
 
-		$.each(data, function(index, item) {
+		jQuery.each(data, function(index, item) {
 			if (index == data_len - 1) {
 				slickSlideshow.getSlideDetails(item, true)
 			} else {
