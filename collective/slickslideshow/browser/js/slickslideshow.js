@@ -87,16 +87,47 @@ slickSlideshow.addSlides = function() {
 			} else {
 				var slide_time = i * partial_duration;
 				var data_thumbnail = slickSlideshow.slides[i].url + "/@@images/image/large";
-				slickSlideshow.$obj.slickAdd("<div><div class='inner-bg'><img src='"+slickSlideshow.slides[i].url+"/@@images/image/large' data-thumbnail='"+data_thumbnail+"'></div></div>");
+				if (i == 0) {
+					slickSlideshow.$obj.slickAdd("<div><div class='slideshow-btn-down'></div><div class='inner-bg'><img src='"+slickSlideshow.slides[i].url+"/@@images/image/large' data-thumbnail='"+data_thumbnail+"'></div></div>");
+				} else {
+					slickSlideshow.$obj.slickAdd("<div><div class='inner-bg'><img src='"+slickSlideshow.slides[i].url+"/@@images/image/large' data-thumbnail='"+data_thumbnail+"'></div></div>");
+				}
 			}
 		} else {
 			if (slickSlideshow.slides[i].video) {
-				slickSlideshow.$obj.slickAdd("<div><div class='inner-bg'>"+slickSlideshow.slides[i].embed+"</div></div>");
+				if (i == 0) {
+					slickSlideshow.$obj.slickAdd("<div><div class='slideshow-btn-down'></div><div class='inner-bg'>"+slickSlideshow.slides[i].embed+"</div></div>");
+				} else {
+					slickSlideshow.$obj.slickAdd("<div><div class='inner-bg'>"+slickSlideshow.slides[i].embed+"</div></div>");
+				}
 			} else {
-				slickSlideshow.$obj.slickAdd("<div><div class='inner-bg'><img src='"+slickSlideshow.slides[i].url+"/@@images/image/large'></div></div>");
+				if (i == 0) {
+					slickSlideshow.$obj.slickAdd("<div><div class='slideshow-btn-down'></div><div class='inner-bg'><img src='"+slickSlideshow.slides[i].url+"/@@images/image/large'></div></div>");
+				} else {
+					slickSlideshow.$obj.slickAdd("<div><div class='inner-bg'><img src='"+slickSlideshow.slides[i].url+"/@@images/image/large'></div></div>");
+				}
 			}
 		}
 	};
+
+	jQuery(".slideshow-btn-down").click(function() {
+		var scrollTo = ".portlet-weekday";
+		if (!jQuery(".portlet-weekday").length) {
+		  scrollTo = ".portlet-static-online-tickets";
+		}
+
+		jQuery('.website-wrapper').animate({
+		        scrollTop: jQuery(scrollTo).offset().top
+		}, 600, function() {
+			// slide
+			var sliding = true;
+			if (slickSlideshow != undefined) {
+			  if (slickSlideshow.playing) {
+			    slickSlideshow.pauseCurrentSlide();
+			  }
+			};
+		});
+  	});
 
 	slickSlideshow.addAudioPlayer();
 };
