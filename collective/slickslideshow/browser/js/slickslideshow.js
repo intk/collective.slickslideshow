@@ -32,7 +32,6 @@ slickSlideshow.youtube_ready = false;
 slickSlideshow.initiated_youtube = false;
 
 /* Responsive storytelling enhancement */
-
 var isMobile = {
     Android: function() {
         return navigator.userAgent.match(/Android/i);
@@ -49,8 +48,11 @@ var isMobile = {
     Windows: function() {
         return navigator.userAgent.match(/IEMobile/i);
     },
+    Surface: function() {
+        return navigator.userAgent.match(/MSIE/i);
+    }
     any: function() {
-        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows() || isMobile.Surface());
     }
 };
 
